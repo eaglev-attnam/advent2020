@@ -59,19 +59,11 @@ public class Day6 extends Day {
 			youOrbits.add(current);
 			current = orbits.get(current);
 		}
-		Set<String> sanOrbits = new HashSet<>();
 		current = "SAN";
-		while(current != null) {
-			sanOrbits.add(current);
+		while(!youOrbits.contains(current)) {
 			current = orbits.get(current);
 		}
-		Set<String> commonOrbits = new HashSet<>();
-		commonOrbits.addAll(youOrbits);
-		commonOrbits.retainAll(sanOrbits);
-		Set<String> superOrbits = commonOrbits.stream().map(orbits::get).collect(Collectors.toSet());
-		commonOrbits.removeAll(superOrbits);
-		String firstCommonOrbit = commonOrbits.iterator().next();
-		return orbitSums.get("YOU") + orbitSums.get("SAN") - (2 * orbitSums.get(firstCommonOrbit)) - 2;
+		return orbitSums.get("YOU") + orbitSums.get("SAN") - (2 * orbitSums.get(current)) - 2;
 		// You to common is YOU - common - 1; common to san = SAN - common - 1.
 	}
 }
