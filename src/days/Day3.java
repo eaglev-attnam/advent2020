@@ -1,8 +1,6 @@
 package days;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,6 +101,9 @@ public class Day3 extends Day {
 			int result = Integer.compare(dist, other.dist);
 			if(result == 0) {
 				result = Integer.compare(x, other.x);
+			}
+			if(result == 0) {
+				result = Integer.compare(y, other.y);
 			}
 			return result;
 		}

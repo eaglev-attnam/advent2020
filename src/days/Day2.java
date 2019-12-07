@@ -1,9 +1,10 @@
 package days;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import common.IntComputer;
 
 public class Day2 extends Day {
 
@@ -55,22 +56,9 @@ public class Day2 extends Day {
 		}
 	}
 	
-	private int runProgram(List<Integer> program) {
-		int pointer = 0;
-		int opcode = program.get(pointer);
-		while(opcode != 99) {
-			int result = program.get(program.get(pointer+1));
-			if(opcode == 1) {
-				result += program.get(program.get(pointer+2));
-			} else if(opcode == 2){
-				result *= program.get(program.get(pointer+2));
-			} else {
-				throw new IllegalArgumentException("Illegal opcode " + opcode);
-			}
-			program.set(program.get(pointer+3), result);
-			pointer += 4;
-			opcode = program.get(pointer);
-		}
-		return program.get(0);
+	int runProgram(List<Integer> program) {
+		IntComputer computer = new IntComputer();
+		computer.runProgram(program);
+		return computer.getMemoryAt(0);
 	}
 }
