@@ -1,5 +1,7 @@
 package days;
 
+import common.Coordinate;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,14 +87,11 @@ public class Day3 extends Day {
 		return coords;
 	}
 	
-	private class SortableCoord implements Comparable<SortableCoord> {
-		private int x;
-		private int y;
+	private class SortableCoord extends Coordinate implements Comparable<SortableCoord> {
 		private int dist;
 		
 		private SortableCoord(int x, int y) {
-			this.x = x;
-			this.y = y;
+			super(x, y);
 			this.dist = Math.abs(x) + Math.abs(y);
 		}
 
@@ -107,39 +106,5 @@ public class Day3 extends Day {
 			}
 			return result;
 		}
-		
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result + x;
-			result = prime * result + y;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			SortableCoord other = (SortableCoord) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
-			if (x != other.x)
-				return false;
-			if (y != other.y)
-				return false;
-			return true;
-		}
-
-		private Day3 getOuterType() {
-			return Day3.this;
-		}
-		
-		
 	}
 }
