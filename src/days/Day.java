@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import visuals.Visual;
 
 public abstract class Day {
 	
@@ -16,10 +19,10 @@ public abstract class Day {
 			new Day4(),
 			new Day5(),
 			new Day6(),
-			new Day7()/*,
-			new Day8()*/,
-			new Day9()/*,
-			new Day10(),
+			new Day7(),
+			new Day8(),
+			new Day9(),
+			new Day10()/*,
 			new Day11(),
 			new Day12(),
 			new Day13(),
@@ -41,11 +44,11 @@ public abstract class Day {
 	protected abstract Object part1(List<String> input);
 	protected abstract Object part2(List<String> input);
 
-	public String part1() throws IOException {
-		return part1(getInputFile(1)) + "";
+	public Object part1() throws IOException {
+		return part1(getInputFile(1));
 	}
-	public String part2() throws IOException {
-		return part2(getInputFile(sameInputFile() ? 1 : 2)) + "";
+	public Object part2() throws IOException {
+		return part2(getInputFile(sameInputFile() ? 1 : 2));
 	}
 	
 	protected boolean sameInputFile() {
@@ -64,5 +67,13 @@ public abstract class Day {
 	
 	public static Day getLastDay() {
 		return DAYS[DAYS.length - 1];
+	}
+	
+	public Optional<Visual> get1Visual() {
+		return Optional.empty();
+	}
+	
+	public Optional<Visual> get2Visual() {
+		return Optional.empty();
 	}
 }

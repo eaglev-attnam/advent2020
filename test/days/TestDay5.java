@@ -16,12 +16,12 @@ public class TestDay5 {
         List<Integer> program = Arrays.asList(1002,4,3,4,33);
         computer.addInput(1);
         computer.runProgram(program);
-        assert computer.getMemoryAt(4).equals(99);
+        assert computer.getMemoryAt(4).equals(99L);
 
         program = Arrays.asList(1101,100,-1,4,0);
         computer.addInput(1);
         computer.runProgram(program);
-        assert computer.getMemoryAt(4).equals(99);
+        assert computer.getMemoryAt(4).equals(99L);
     }
 
     @Test

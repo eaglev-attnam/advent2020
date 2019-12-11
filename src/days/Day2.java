@@ -44,7 +44,7 @@ public class Day2 extends Day {
 		return "nope";
 	}
 	
-	private int attempt(List<Integer> original, int i, int j) {
+	private Long attempt(List<Integer> original, int i, int j) {
 		List<Integer> program = new ArrayList<>();
 		program.addAll(original);
 		program.set(1, i);
@@ -52,11 +52,11 @@ public class Day2 extends Day {
 		try {
 			return runProgram(program);
 		} catch(ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
-			return -1;
+			return -1L;
 		}
 	}
 	
-	int runProgram(List<Integer> program) {
+	Long runProgram(List<Integer> program) {
 		IntComputer computer = new IntComputer();
 		computer.runProgram(program);
 		return computer.getMemoryAt(0);

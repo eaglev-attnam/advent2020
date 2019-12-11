@@ -19,7 +19,7 @@ public class Day7 extends Day {
 		List<Integer> program = Arrays.asList(input.get(0).split(",")).stream().map(Integer::parseInt).collect(Collectors.toList());
 		List<Integer> phases = Arrays.asList(0,1,2,3,4);
 		List<List<Integer>> permutations = getPermutations(phases);
-		return permutations.stream().map(p -> getOutputForPerm(p, program)).max(Integer::compare).get();
+		return permutations.stream().map(p -> getOutputForPerm(p, program)).max(Long::compare).get();
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class Day7 extends Day {
 			comp.addInput(perm.get(i));
 			comp.addInput(input);
 			comp.runProgram(program);
-			input = comp.getOutput().get(0);
+			input = comp.getOutput().get(0).intValue();
 		}
 		return input;
 	}
@@ -54,7 +54,7 @@ public class Day7 extends Day {
 		while(!finished) {
 			for(int i = 0; i < 5; i++) {
 				comps[i].addInput(input);
-				input = comps[i].getOutput().get(comps[i].getOutput().size() - 1);
+				input = comps[i].getOutput().get(comps[i].getOutput().size() - 1).intValue();
 			}
 			finished = !comps[0].isPaused();
 		}
