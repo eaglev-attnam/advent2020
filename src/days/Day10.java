@@ -2,13 +2,11 @@ package days;
 
 import common.Coordinate;
 
-import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Day10 extends Day {
 
