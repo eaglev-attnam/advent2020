@@ -1,8 +1,8 @@
 package days;
 
+import common.AdventMath;
 import common.Coordinate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -58,17 +58,18 @@ public class Day12 extends Day {
 	@Override
 	public Object part2(List<String> input) {
 		Set<Moon> moons = getMoons(input);
-		int xPeriod = calcPeriod(moons.stream().map(m -> m.getPosition().getX()).collect(Collectors.toList()).toArray(new Integer[0]));
-		int yPeriod = calcPeriod(moons.stream().map(m -> m.getPosition().getY()).collect(Collectors.toList()).toArray(new Integer[0]));
-		int zPeriod = calcPeriod(moons.stream().map(m -> m.getPosition().getZ()).collect(Collectors.toList()).toArray(new Integer[0]));
-		return xPeriod + " " + yPeriod + " " + zPeriod;
+		long xPeriod = calcPeriod(moons.stream().map(m -> m.getPosition().getX()).collect(Collectors.toList()).toArray(new Integer[0]));
+		long yPeriod = calcPeriod(moons.stream().map(m -> m.getPosition().getY()).collect(Collectors.toList()).toArray(new Integer[0]));
+		long zPeriod = calcPeriod(moons.stream().map(m -> m.getPosition().getZ()).collect(Collectors.toList()).toArray(new Integer[0]));
+		return AdventMath.lcm(xPeriod, AdventMath.lcm(yPeriod, zPeriod));
 		//4410095324602605 too high
 	}
 
-	private int calcPeriod(Integer[] initial) {
+	private long calcPeriod(Integer[] initial) {
 		Integer[] current = Arrays.copyOf(initial, initial.length);
-		int steps = 0;
+		long steps = 0;
 		int[] diff = new int[current.length];
+		int[] initialDiff = new int[current.length];
 		do {
 			for(int i = 0; i < current.length; i++) {
 				for(int j = i+1; j < current.length; j++) {
@@ -81,7 +82,7 @@ public class Day12 extends Day {
 				current[i] += diff[i];
 			}
 			steps++;
-		} while (!Objects.deepEquals(current, initial) && steps < 1_000_000);
+		} while (!Objects.deepEquals(current, initial) || !Objects.deepEquals(diff, initialDiff));
 		return steps;
 	}
 

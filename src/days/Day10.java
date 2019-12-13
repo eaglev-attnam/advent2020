@@ -1,5 +1,6 @@
 package days;
 
+import common.AdventMath;
 import common.Coordinate;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class Day10 extends Day {
 	boolean isVisibleFrom(Coordinate c, Coordinate other, Collection<Coordinate> field) {
 		int xDiff = c.getX() - other.getX();
 		int yDiff = c.getY() - other.getY();
-		int gcd = gcd(Math.abs(xDiff), Math.abs(yDiff));
+		int gcd = (int) AdventMath.gcd(Math.abs(xDiff), Math.abs(yDiff));
 		int xDiv = xDiff/gcd;
 		int yDiv = yDiff/gcd;
 		for(int i = 1; i < gcd; i++) {
@@ -47,25 +48,6 @@ public class Day10 extends Day {
 			}
 		}
 		return true;
-	}
-
-	int gcd(int xDiff, int yDiff) {
-		int biggest = xDiff;
-		int smallest = yDiff;
-		if(biggest < smallest) {
-			int tmp = biggest;
-			biggest = smallest;
-			smallest = tmp;
-		}
-		if(smallest == 0) {
-			return biggest;
-		}
-		while(biggest % smallest > 0) {
-			int tmp = biggest % smallest;
-			biggest = smallest;
-			smallest = tmp;
-		}
-		return smallest;
 	}
 
 	@Override
