@@ -148,4 +148,8 @@ public class IntComputer {
 		}
 		memory.set(i.intValue(), value);
 	}
+
+	public void clearOutput() {
+		output.clear();
+	}
 }
