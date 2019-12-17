@@ -1,6 +1,7 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,12 +34,17 @@ public class IntComputer {
 		output = new ArrayList<>();
 		doRun();
 	}
-	
+
 	public void runLongProgram(List<Long> program) {
 		memory = new ArrayList<>();
 		memory.addAll(program);
 		output = new ArrayList<>();
 		doRun();
+	}
+
+	public void runCommaSeperatedStringProgram(String program) {
+		List<Long> longProgram = Arrays.asList(program.split(",")).stream().map(Long::parseLong).collect(Collectors.toList());
+		runLongProgram(longProgram);
 	}
 	
 	public void addInput(int input) {
