@@ -3,20 +3,23 @@ package days;
 import common.Coordinate;
 import javafx.util.Pair;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class Day18 extends Day {
 
-	private static final String LC_LETTERS = "abcdefghijklmnopqrstuvwxyz";
-	private static final String UC_LETTERS = LC_LETTERS.toUpperCase();
+	private String LC_LETTERS = "abcdefghijklmnopqrstuvwxyz";
+	private String UC_LETTERS;
 
 	@Override
 	protected int getChallengeNumber() {
@@ -27,6 +30,12 @@ public class Day18 extends Day {
 
 	@Override
 	protected Object part1(List<String> input) {
+		return part1(input, LC_LETTERS);
+	}
+
+	public Object part1(List<String> input, String newLetters) {
+		LC_LETTERS = newLetters;
+		UC_LETTERS = LC_LETTERS.toUpperCase();
 		char[][] map = new char[input.get(0).length()][input.size()];
 		Map<Character, Coordinate> items = new HashMap<>();
 		for(int y = 0; y < input.size(); y++) {
@@ -41,51 +50,60 @@ public class Day18 extends Day {
 		}
 
 		Map<Character, Map<Character, Integer>> distances = new HashMap<>();
-		Map<Character, Map<Character, String>> blockingDoors = new HashMap<>();
+		Map<Character, Map<Character, List<Character>>> neededKeys = new HashMap<>();
 
 		for(Character c : (LC_LETTERS + "@").toCharArray()) {
 			distances.put(c, new HashMap<>());
-			blockingDoors.put(c, new HashMap<>());
+			neededKeys.put(c, new HashMap<>());
 		}
 		for(int i = 0; i < LC_LETTERS.length(); i++) {
 			char key = LC_LETTERS.charAt(i);
-			Pair<Integer, String> distAndDoors = getDistAndDoors(map, items.get('@'), items.get(key));
+			Pair<Integer, List<Character>> distAndDoors = getDistAndDoors(map, items.get('@'), items.get(key));
 			distances.get('@').put(key, distAndDoors.getKey());
-			blockingDoors.get('@').put(key, distAndDoors.getValue());
+			neededKeys.get('@').put(key, distAndDoors.getValue());
 			for(int j = i + 1; j < LC_LETTERS.length(); j++) {
 				char key2 = LC_LETTERS.charAt(j);
-				Pair<Integer, String> distAndDoors2 = getDistAndDoors(map, items.get(key), items.get(key2));
+				Pair<Integer, List<Character>> distAndDoors2 = getDistAndDoors(map, items.get(key), items.get(key2));
 				distances.get(key).put(key2, distAndDoors2.getKey());
-				blockingDoors.get(key).put(key2, distAndDoors2.getValue());
+				neededKeys.get(key).put(key2, distAndDoors2.getValue());
 				distances.get(key2).put(key, distAndDoors2.getKey());
-				blockingDoors.get(key2).put(key, distAndDoors2.getValue());
+				neededKeys.get(key2).put(key, distAndDoors2.getValue());
 			}
 		}
 
-		return shortestDist(distances, blockingDoors, '@', new HashSet<>());
+		return shortestDist(distances, neededKeys, '@', new HashSet<>(), new HashMap<>());
+		// 2147483647 too high
+		// 6012 too low
 	}
 
-	private int shortestDist(Map<Character, Map<Character, Integer>> distances, Map<Character, Map<Character, String>> blockingDoors,
-							 Character current, Set<Character> done) {
-		if(done.size() == 26) {
+	private int shortestDist(Map<Character, Map<Character, Integer>> distances, Map<Character, Map<Character, List<Character>>> blockingDoors,
+							 Character current, Set<Character> done, Map<String, Integer> calculated) {
+		String key = done.stream().sorted().map(a -> a + "").collect(Collectors.joining()) + ":" + current;
+		if(done.size() == LC_LETTERS.length()) {
 			return 0;
+		} else if (calculated.containsKey(key)){
+			return calculated.get(key);
 		}
 		int best = Integer.MAX_VALUE;
 		for(Character c : distances.get(current).keySet()) {
-			if(done.containsAll(Arrays.asList(blockingDoors.get(current).get(c).toLowerCase().toCharArray()))) {
+			if(current != c && !done.contains(c) && done.containsAll(blockingDoors.get(current).get(c))) {
 				int dist = distances.get(current).get(c);
 				Set<Character> newDone = new HashSet<>(done);
 				newDone.add(c);
-				dist += shortestDist(distances, blockingDoors, c, newDone);
+				dist += shortestDist(distances, blockingDoors, c, newDone, calculated);
 				if(dist < best) {
 					best = dist;
 				}
 			}
 		}
+		if(done.size() < 10) {
+			System.out.println("Resolved level " + key.length() + " round " + key + ".");
+		}
+		calculated.put(key, best);
 		return best;
 	}
 
-	private Pair<Integer, String> getDistAndDoors(char[][] map, Coordinate start, Coordinate end) {
+	private Pair<Integer, List<Character>> getDistAndDoors(char[][] map, Coordinate start, Coordinate end) {
 		SortedSet<AStarCoordinate> toCheck = new TreeSet<>();
 		Set<Coordinate> done = new HashSet<>();
 		AStarCoordinate c = new AStarCoordinate();
@@ -109,13 +127,14 @@ public class Day18 extends Day {
 			toCheck.remove(c);
 		}
 		int dist = c.distanceDone;
-		String doors = "";
+		List<Character> neededKeys = new ArrayList<>();
 		while(c.parent != null) {
 			if(UC_LETTERS.contains(map[c.coordinate.getX()][c.coordinate.getY()] + "")) {
-				doors += map[c.coordinate.getX()][c.coordinate.getY()];
+				neededKeys.add((map[c.coordinate.getX()][c.coordinate.getY()] + "").toLowerCase().charAt(0));
 			}
+			c = c.parent;
 		}
-		return new Pair<>(dist, doors);
+		return new Pair<>(dist, neededKeys);
 	}
 
 	private Set<Coordinate> getNeighbours(Coordinate c) {
@@ -135,7 +154,30 @@ public class Day18 extends Day {
 
 		@Override
 		public int compareTo(AStarCoordinate o) {
-			return Integer.compare(distanceDone + minDistToDo, o.distanceDone + o.minDistToDo);
+			int result = Integer.compare(distanceDone + minDistToDo, o.distanceDone + o.minDistToDo);
+			if(result == 0) {
+				result = Integer.compare(coordinate.getX(), o.coordinate.getX());
+			}
+			if(result == 0) {
+				result = Integer.compare(coordinate.getY(), o.coordinate.getY());
+			}
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			AStarCoordinate that = (AStarCoordinate) o;
+			return distanceDone == that.distanceDone &&
+					minDistToDo == that.minDistToDo &&
+					coordinate.equals(that.coordinate) &&
+					Objects.equals(parent, that.parent);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(coordinate, parent, distanceDone, minDistToDo);
 		}
 	}
 
