@@ -18,6 +18,15 @@ public class Coordinate {
     public int getY() {
         return y;
     }
+    
+    public Coordinate[] getNeighbours() {
+    	return new Coordinate[] {
+    			new Coordinate(x-1, y),
+    			new Coordinate(x+1, y),
+    			new Coordinate(x, y-1),
+    			new Coordinate(x, y+1)
+    	};
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -35,7 +44,6 @@ public class Coordinate {
     
     @Override
     public String toString() {
-    	// TODO Auto-generated method stub
     	return "(" + x + "," + y + ")";
     }
  }

@@ -1,6 +1,7 @@
 package days;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day1 extends Day {
 
@@ -11,32 +12,33 @@ public class Day1 extends Day {
 	
 	@Override
 	protected Object part1(List<String> input) {
-		return input.stream()
-			.map(Integer::parseInt)
-			.map(this::getFuelNeeded)
-			.reduce(0, (a,b) -> a + b);
+		List<Integer> parsed = input.stream()
+				.map(Integer::parseInt)
+				.collect(Collectors.toList());
+		for(int i = 0; i < parsed.size(); i++) {
+			for(int j = i+1; j < parsed.size(); j++) {
+				if(parsed.get(i) + parsed.get(j) == 2020) {
+					return parsed.get(i) * parsed.get(j);
+				}
+			}
+		}
+		return 0;
 	}
 
 	@Override
 	protected Object part2(List<String> input) {
-		return input.stream()
+		List<Integer> parsed = input.stream()
 				.map(Integer::parseInt)
-				.map(this::getMoreFuelNeeded)
-				.reduce(0, (a,b) -> a + b);
-	}
-
-	private int getFuelNeeded(int moduleMass) {
-		int thirdModule = moduleMass / 3;
-		return thirdModule - 2;
-	}
-	
-	private int getMoreFuelNeeded(int moduleMass) {
-		int newFuel = getFuelNeeded(moduleMass);
-		int totalFuel = newFuel;
-		while(newFuel >= 9) {
-			newFuel = getFuelNeeded(newFuel);
-			totalFuel += newFuel;
+				.collect(Collectors.toList());
+		for(int i = 0; i < parsed.size(); i++) {
+			for(int j = i+1; j < parsed.size(); j++) {
+				for(int k = j+1; k < parsed.size(); k++) {
+					if(parsed.get(i) + parsed.get(j) + parsed.get(k) == 2020) {
+						return parsed.get(i) * parsed.get(j) * parsed.get(k);
+					}
+				}
+			}
 		}
-		return totalFuel;
+		return 0;
 	}
 }

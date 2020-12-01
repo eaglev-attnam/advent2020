@@ -1,6 +1,7 @@
 package days;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
@@ -10,16 +11,25 @@ public class TestDay1 {
 	
 	@Test
 	public void testPart1() {
-		assert Objects.equals(day1.part1(Arrays.asList("12")), 2);
-		assert Objects.equals(day1.part1(Arrays.asList("14")), 2);
-		assert Objects.equals(day1.part1(Arrays.asList("1969")), 654);
-		assert Objects.equals(day1.part1(Arrays.asList("100756")), 33583);
+		List<String> input = Arrays.asList(
+				"1721",
+				"979",
+				"366",
+				"299",
+				"675",
+				"1456");
+		assert Objects.equals(day1.part1(input), 514579);
 	}
 	
 	@Test
 	public void testPart2() {
-		assert Objects.equals(day1.part2(Arrays.asList("14")), 2);
-		assert Objects.equals(day1.part2(Arrays.asList("1969")), 966);
-		assert Objects.equals(day1.part2(Arrays.asList("100756")), 50346);
+		List<String> input = Arrays.asList(
+				"1721",
+				"979",
+				"366",
+				"299",
+				"675",
+				"1456");
+		assert Objects.equals(day1.part2(input), 241861950);
 	}
 }
