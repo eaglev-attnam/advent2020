@@ -13,7 +13,9 @@ import visuals.Visual;
 public abstract class Day {
 	
 	public static final Day[] DAYS = new Day[] {
-			new Day1()
+			new Day1(),
+			new Day2(),
+			new Day3()
 		};
 	
 	protected abstract int getChallengeNumber();
