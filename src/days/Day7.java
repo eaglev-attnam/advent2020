@@ -17,8 +17,7 @@ public class Day7 extends Day {
 	protected Object part1(List<String> input) {
 		Map<String, Set<String>> subs = new HashMap<>();
 		for(String rule : input) {
-			HashMap.Entry entry = parseNoNumber(rule);
-			subs.put((String) entry.getKey(), (Set<String>) entry.getValue());
+			subs = parseNoNumber(rule, subs);
 		}
 		Map<String, Boolean> canContainShinyGold = new HashMap<>();
 		canContainShinyGold.put("shiny gold", true);
@@ -46,25 +45,26 @@ public class Day7 extends Day {
 		}
 	}
 
-	private HashMap.Entry parseNoNumber(String rule) {
+	private  Map<String, Set<String>> parseNoNumber(String rule, Map<String, Set<String>> subs) {
 		String[] words = rule.split(" ");
 		String bagColor = words[0] + " " + words[1]; // 5 6, 9 10
 		if(rule.endsWith("no other bags.")) {
-			return new HashMap.SimpleEntry<String, Set<String>>(bagColor, new HashSet<>());
+			subs.put(bagColor, new HashSet<>());
+			return subs;
 		}
-		Set<String> subs = new HashSet<>();
+		Set<String> thisSubs = new HashSet<>();
 		for(int i = 5; i < words.length; i+= 4) {
-			subs.add(words[i] + " " + words[i+1]);
+			thisSubs.add(words[i] + " " + words[i+1]);
 		}
-		return new HashMap.SimpleEntry<>(bagColor, subs);
+		subs.put(bagColor, thisSubs);
+		return subs;
 	}
 
 	@Override
 	protected Object part2(List<String> input) {
 		Map<String, Map<String, Integer>> subs = new HashMap<>();
 		for(String rule : input) {
-			HashMap.Entry entry = parse(rule);
-			subs.put((String) entry.getKey(), (Map<String, Integer>) entry.getValue());
+			subs = parse(rule, subs);
 		}
 		return getNumberIn("shiny gold", subs);
 	}
@@ -78,16 +78,18 @@ public class Day7 extends Day {
 		return number;
 	}
 
-	private HashMap.Entry parse(String rule) {
+	private Map<String, Map<String, Integer>> parse(String rule, Map<String, Map<String, Integer>> subs) {
 		String[] words = rule.split(" ");
 		String bagColor = words[0] + " " + words[1]; // 5 6, 9 10
 		if(rule.endsWith("no other bags.")) {
-			return new HashMap.SimpleEntry<String, HashMap<String, Integer>>(bagColor, new HashMap<>());
+			subs.put(bagColor, new HashMap<>());
+			return subs;
 		}
-		Map<String, Integer> subs = new HashMap<>();
+		Map<String, Integer> thiSubs = new HashMap<>();
 		for(int i = 5; i < words.length; i+= 4) {
-			subs.put(words[i] + " " + words[i+1], Integer.parseInt(words[i-1]));
+			thiSubs.put(words[i] + " " + words[i+1], Integer.parseInt(words[i-1]));
 		}
-		return new HashMap.SimpleEntry<>(bagColor, subs);
+		subs.put(bagColor, thiSubs);
+		return subs;
 	}
 }
