@@ -23,7 +23,8 @@ public abstract class Day {
 			new Day8(),
 			new Day9(),
 			new Day10(),
-			new Day11()
+			new Day11(),
+			new Day12()
 		};
 	
 	protected abstract int getChallengeNumber();
