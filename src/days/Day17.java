@@ -1,14 +1,9 @@
 package days;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class Day17 extends Day {
 
@@ -106,59 +101,6 @@ public class Day17 extends Day {
 			toCheck = nextToCheck;
 		}
 		return active.size();
-	}
-
-	private void print(Set<Coordinate> coords) {
-		int minx = Integer.MAX_VALUE;
-		int maxx = Integer.MIN_VALUE;
-		int miny = Integer.MAX_VALUE;
-		int maxy = Integer.MIN_VALUE;
-		int minz = Integer.MAX_VALUE;
-		int maxz = Integer.MIN_VALUE;
-		int minw = Integer.MAX_VALUE;
-		int maxw = Integer.MIN_VALUE;
-		for(Coordinate c : coords) {
-			if(c.x < minx) {
-				minx = c.x;
-			}
-			if(c.y < miny) {
-				miny = c.y;
-			}
-			if(c.z < minz) {
-				minz = c.z;
-			}
-			if(c.w < minw) {
-				minw = c.w;
-			}
-			if(c.x > maxx) {
-				maxx = c.x;
-			}
-			if(c.y > maxy) {
-				maxy = c.y;
-			}
-			if(c.z > maxz) {
-				maxz = c.z;
-			}
-			if(c.w > maxw) {
-				maxw = c.w;
-			}
-		}
-		for (int w = minw; w <= maxw; w++) {
-			for (int y = miny; y <= maxy; y++) {
-				for (int z = minz; z <= maxz; z++) {
-					for(int x = minx; x <= maxx; x++) {
-						if(coords.contains(new Coordinate(x,y,z,w))) {
-							System.out.print("#");
-						} else {
-							System.out.print(".");
-						}
-					}
-					System.out.print(" ");
-				}
-				System.out.println();
-			}
-			System.out.println();
-		}
 	}
 
 	private class Coordinate {
