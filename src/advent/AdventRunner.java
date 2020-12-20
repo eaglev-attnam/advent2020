@@ -33,7 +33,7 @@ public class AdventRunner {
 		Object out2 = day.part2();
 		System.out.println("Part 2 took " + (System.currentTimeMillis() - start) + "ms");
 		System.out.println(out2);
-		day.get1Visual().ifPresent(v -> v.show(out1));
-		day.get2Visual().ifPresent(v -> v.show(out2));
+		day.get1Visual().ifPresent(v -> v.show());
+		day.get2Visual().ifPresent(v -> v.show());
 	}
 }
